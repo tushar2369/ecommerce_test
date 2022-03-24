@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -15,13 +17,17 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
 
   File? pickedImage;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   pickImage(ImageSource imageType) async {
     print('Pick Image function call');
+    final SharedPreferences prefs = await _prefs;
     try {
       final photo = await ImagePicker().pickImage(source: imageType);
       if (photo == null) return;
       final tempImage = File(photo.path);
       setState(() {
+        prefs.setString('file', tempImage.path);
+        print('${tempImage.path}');
         pickedImage = tempImage;
         Navigator.of(context).pop();
       });
@@ -31,6 +37,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+   checkPref()async{
+     final SharedPreferences prefs = await _prefs;
+     var file=prefs.getString('file')??'';
+     if(file.isEmpty){
+       print('no file');
+     }else{
+       print('File Location : '+file);
+       File newFile=File(file);
+       setState(() {
+         pickedImage=newFile;
+       });
+
+     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    checkPref();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,8 +87,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       width: 170,
                       height: 170,
                       fit: BoxFit.cover,)
-                        :Image.network(
-                      'https://upload.wikimedia.org/wikipedia/commons/5/5f/Alberto_conversi_profile_pic.jpg',
+                        :Image.asset(
+                      'assets/images/noimage.jpg',
                       width: 170,
                       height: 170,
                       fit: BoxFit.cover,

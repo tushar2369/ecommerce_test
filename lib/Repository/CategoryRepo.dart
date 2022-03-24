@@ -12,6 +12,7 @@ class CategoryRepo{
     const header={'Content-Type': 'application/json'};
     var response=await http.get(Uri.parse(url),headers: header);
     if (response.statusCode == 200) {
+      print(response.body);
       return response.body;
     } else {
       throw Exception('Failed to load album');
