@@ -60,6 +60,7 @@ class DatabaseHelper {
   Future<int> updateCart(CartModel cartModel)async{
     Database db=await this.database;
     print("update id : "+cartModel.id.toString());
+    print("update quantity : "+cartModel.quantity.toString());
     var result =await db.update(cartTable, cartModel.toMap(),where: '$id=?',whereArgs: [cartModel.id]);
     print(result);
     return result;
@@ -69,6 +70,14 @@ class DatabaseHelper {
     Database db=await this.database;
     var result =await db.rawDelete('DELETE FROM $cartTable WHERE $id=$idd');
     print(result);
+    return result;
+  }
+
+
+  Future<List<Map<String,dynamic>>>getCartListById(int? pid)async{
+    Database db=await this.database;
+    var result=await db.rawQuery('SELECT * FROM $cartTable WHERE $productId=$pid');
+    print('Succecss Result '+result.toString());
     return result;
   }
 

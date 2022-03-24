@@ -17,7 +17,6 @@ class CartRepo {
   Future<int> addCart(CartModel? cartModel) async {
     List<CartModel> carts = <CartModel>[];
     var result = await _databaseHelper.insertCart(cartModel!);
-
     return result;
   }
 
@@ -30,5 +29,15 @@ class CartRepo {
   Future<int> deleteCart(int? id) async {
     var result = await _databaseHelper.deleteCart(id);
     return result;
+  }
+
+
+  Future<List<CartModel>> getcartsByPid(int? pid) async {
+    List<CartModel> carts = <CartModel>[];
+    var result = await _databaseHelper.getCartListById(pid);
+    for (var element in result) {
+      carts.add(CartModel.fromMapObject(element));
+    }
+    return carts;
   }
 }

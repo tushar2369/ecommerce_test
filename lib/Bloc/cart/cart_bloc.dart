@@ -33,10 +33,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     if(event is AddCart){
       try{
-        int result=await CartRepo().addCart(event._cartModel!);
+        List<CartModel> preCart=await CartRepo().getcartsByPid(event._cartModel!.productId);
+        if(preCart.length>0){
+          preCart[0].quantity=preCart[0].quantity!+1;
+          add(UpdateCart(event._context, preCart[0]));
+        }else{
+          int result=await CartRepo().addCart(event._cartModel!);
+          add( GetAllCarts(event._context));
+          ScaffoldMessenger.of(event._context!).showSnackBar( const SnackBar(content:Text('Product add to cart success')));
+        }
 
-        add( GetAllCarts(event._context));
-        ScaffoldMessenger.of(event._context!).showSnackBar( const SnackBar(content:Text('Product add to cart success')));
       }catch(e){
 
       }
@@ -44,6 +50,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     if(event is UpdateCart){
       try{
+        print("Update event : "+event._cartModel!.quantity.toString());
         int result=await CartRepo().updateCart(event._cartModel!);
         if(result==1){
           print("update success : "+result.toString());
