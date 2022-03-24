@@ -25,3 +25,8 @@ class CheckOutCart extends CartEvent{
   CheckOutCart(this._context);
 }
 
+class DeleteCart extends CartEvent{
+  BuildContext? _context;
+  int? _id;
+  DeleteCart(this._context, this._id);
+}

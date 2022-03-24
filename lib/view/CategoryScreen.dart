@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ecommerce/Bloc/cart/cart_bloc.dart';
 import 'package:ecommerce/Bloc/category/category_bloc.dart';
 import 'package:ecommerce/Repository/CategoryRepo.dart';
 import 'package:ecommerce/view/CartScreen.dart';
@@ -21,6 +22,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void initState() {
     // TODO: implement initState
     BlocProvider.of<CategoryBloc>(context).add(GetCategory());
+    BlocProvider.of<CartBloc>(context).add(GetAllCarts(context));
     super.initState();
   }
 
@@ -40,20 +42,54 @@ class _CategoryScreenState extends State<CategoryScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-               Navigator.push(context, new MaterialPageRoute(builder: (context)=>CartScreen()));
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => CartScreen()));
             },
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
-              child: Icon(Icons.shopping_cart,
-                  color: Theme.of(context).buttonColor),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.shopping_cart,
+                        color: Theme.of(context).buttonColor),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      height: 18,
+                      width: 18,
+                      decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(20)),
+                      child:
+                          Center(child: BlocBuilder<CartBloc, CartState>(
+                        builder: (context, state) {
+                          if(state is CartOnSuccess && state.carts!=null){
+                            return Text('${state.carts!.length}');
+                          }else{
+                            return const Text('0');
+                          }
+
+                        },
+                      )),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(context,  MaterialPageRoute(builder: (context)=>const ProfileScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()));
             },
             child: Padding(
-              padding:const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
               child: Icon(Icons.person_outline,
                   color: Theme.of(context).buttonColor),
             ),
@@ -152,42 +188,52 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ///Category ......................
               BlocBuilder<CategoryBloc, CategoryState>(
                 builder: (context, state) {
-                  if(state is CategoryOnSuccess && state.categories!=null){
+                  if (state is CategoryOnSuccess && state.categories != null) {
                     return Container(
                       height: ScreenUtil().setHeight(400),
                       padding: const EdgeInsets.all(16),
                       child: GridView.builder(
                         itemCount: state.categories!.length,
-                        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            childAspectRatio: 2 / 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10),
-                        itemBuilder: (BuildContext context,index){
-                          var t=state.categories![1].toString();
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                childAspectRatio: 2 / 2,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10),
+                        itemBuilder: (BuildContext context, index) {
+                          var t = state.categories![1].toString();
                           return GestureDetector(
-                            onTap: (){
-                              Navigator.push(context,  MaterialPageRoute(builder: (context)=>ProductScreen(state.categories![index])));
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProductScreen(
+                                          state.categories![index])));
                             },
                             child: Container(
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                color: Theme.of(context).accentColor.withOpacity(0.8),
+                                color: Theme.of(context)
+                                    .accentColor
+                                    .withOpacity(0.8),
                               ),
-                              child:  Center(
+                              child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      state.categories![index].toString().capitalized(),
+                                      state.categories![index]
+                                          .toString()
+                                          .capitalized(),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold),
                                     ),
-
-                                    const SizedBox(height: 8.0,),
+                                    const SizedBox(
+                                      height: 8.0,
+                                    ),
                                     Text(
                                       state.catSize![index].toString(),
                                       style: TextStyle(
@@ -204,11 +250,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         primary: false,
                       ),
                     );
-                  }else if(state is CategoryOnFailed){
+                  } else if (state is CategoryOnFailed) {
                     return Center(
                       child: Text('${state.message}'),
                     );
-                  }else{
+                  } else {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
@@ -222,6 +268,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 }
+
 extension Capitalized on String {
-  String capitalized() => this.substring(0, 1).toUpperCase() + this.substring(1).toLowerCase();
+  String capitalized() =>
+      this.substring(0, 1).toUpperCase() + this.substring(1).toLowerCase();
 }

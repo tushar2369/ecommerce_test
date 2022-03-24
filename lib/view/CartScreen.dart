@@ -202,8 +202,7 @@ class _CartScreenState extends State<CartScreen> {
                                         right: 12.0,
                                         child: GestureDetector(
                                           onTap: (){
-                                            // print('Hiiiiiiii');
-                                           // BlocProvider.of<CartBloc>(context).add(CartItemDelete(widget._cartData.specificationId.toString(),widget._cartData.productId.toString()));
+                                            BlocProvider.of<CartBloc>(context).add(DeleteCart(context, state.carts![index].id));
                                           },
                                           child: Container(
                                             child: Icon(Icons.delete_outlined,size:18,color: Color(0xffFF647C),

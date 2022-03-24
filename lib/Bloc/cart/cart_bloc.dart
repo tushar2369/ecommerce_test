@@ -90,5 +90,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       }
     }
 
+
+    if(event is DeleteCart){
+      int result=await CartRepo().deleteCart(event._id);
+
+      if(result==1){
+        add(GetAllCarts(event._context));
+        ScaffoldMessenger.of(event._context!).showSnackBar(  SnackBar(content:Text('Item Delete')));
+      }
+    }
+
   }
 }
