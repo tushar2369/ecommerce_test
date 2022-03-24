@@ -8,7 +8,8 @@ class CategoryOnLoading extends CategoryState{}
 
 class CategoryOnSuccess extends CategoryState{
   List<String>? categories;
-  CategoryOnSuccess(this.categories);
+  List<int>? catSize;
+  CategoryOnSuccess(this.categories,this.catSize);
 }
 
 class CategoryOnFailed extends CategoryState{

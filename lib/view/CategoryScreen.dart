@@ -176,12 +176,26 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 color: Theme.of(context).accentColor.withOpacity(0.8),
                               ),
                               child:  Center(
-                                child: Text(
-                                  state.categories![index].toString().capitalized(),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      state.categories![index].toString().capitalized(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+
+                                    const SizedBox(height: 8.0,),
+                                    Text(
+                                      state.catSize![index].toString(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
