@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:ecommerce/Model/CartModel.dart';
 import 'package:ecommerce/Repository/CartRepo.dart';
+import 'package:ecommerce/view/ConfirmCheckoutScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -55,7 +56,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         if(result==1){
           print("update success : "+result.toString());
           add( GetAllCarts(event._context));
-          ScaffoldMessenger.of(event._context!).showSnackBar( const SnackBar(content:Text('Cart Update Success')));
+         // ScaffoldMessenger.of(event._context!).showSnackBar( const SnackBar(content:Text('Cart Update Success')));
 
         }
       }catch(e){
@@ -67,18 +68,27 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     if(event is CheckOutCart){
       try{
         double totalPrice=0.0;
+        int i=0;
         for (var element in carts!) {
           if(element.isSelected==1){
+            i++;
             totalPrice=totalPrice+(element.quantity!*element.price!);
             int result=await CartRepo().deleteCart(element.id);
           }
         }
+        if(i>0){
           add( GetAllCarts(event._context));
           ScaffoldMessenger.of(event._context!).showSnackBar(  SnackBar(content:Text('Checkout Success .Price : '+totalPrice.toString())));
 
+          Navigator.push(event._context!, new MaterialPageRoute(builder: (context)=>ConfirmCheckout(totalPrice)));
+
+        }else{
+          ScaffoldMessenger.of(event._context!).showSnackBar(  SnackBar(content:Text('No items in your cart ')));
+        }
       }catch(e){
 
       }
     }
+
   }
 }

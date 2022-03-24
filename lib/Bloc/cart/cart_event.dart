@@ -24,3 +24,4 @@ class CheckOutCart extends CartEvent{
   BuildContext? _context;
   CheckOutCart(this._context);
 }
+

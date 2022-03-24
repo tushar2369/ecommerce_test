@@ -115,6 +115,8 @@ class _CartScreenState extends State<CartScreen> {
                                                         children: [
                                                           GestureDetector(
                                                             onTap: (){
+                                                              state.carts![index].quantity=state.carts![index].quantity!+1;
+                                                              BlocProvider.of<CartBloc>(context).add(UpdateCart(context,state.carts![index]));
 
                                                             },
                                                             child: Container(
@@ -140,16 +142,11 @@ class _CartScreenState extends State<CartScreen> {
 
                                                           GestureDetector(
                                                             onTap: (){
-                                                              /*if(_totalQuantity>1) {
-                                                                setState(() {
-                                                                  _totalQuantity=_totalQuantity-1;
-                                                                  print('total quantity '+_totalQuantity.toString());
-                                                                });
-                                                                BlocProvider.of<CartBloc>(context).add(CartDecrease(
-                                                                    widget._cartData.specificationId.toString(),
-                                                                    widget._cartData.productId.toString()));
+                                                              if(state.carts![index].quantity!>1) {
+                                                                state.carts![index].quantity=state.carts![index].quantity!-1;
+                                                                BlocProvider.of<CartBloc>(context).add(UpdateCart(context,state.carts![index]));
 
-                                                              }*/
+                                                              }
                                                             },
                                                             child: Container(
                                                               height:20,
@@ -194,23 +191,8 @@ class _CartScreenState extends State<CartScreen> {
                                                 textAlign: TextAlign.center,
                                               ),
                                               SizedBox(width: 8.0,),
-                                              ///Discount Price.............
-                                              Container(
-                                                child: Text(
-                                                  " \u09F3${0.0}",
-                                                  style: TextStyle(
-                                                      color: Color(
-                                                        0xff999999,
-                                                      ),
-                                                      fontSize: 12,
-                                                      fontWeight: FontWeight.w400,
-                                                      fontFamily: "Roboto",
-                                                      decoration: TextDecoration.lineThrough
-                                                  ),
-                                                ),
-                                              ),
 
-                                              ///Delete item...........
+
                                             ],
                                           )
                                       ),
@@ -229,20 +211,6 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ),
                                       )
-
-                                      // Positioned(
-                                      //   bottom: 10,
-                                      //     right: 12,
-                                      //     child: GestureDetector(
-                                      //           onTap: (){
-                                      //             Navigator.of(context).push(new MaterialPageRoute(builder: (context)=>Summary(orderID: widget._cartData.orderId.toString(),)));
-                                      //           },
-                                      //       child: Container(
-                                      //           child: Text('Check Out',style: TextStyle(color: Color(0xff6979F8)),
-                                      //           )
-                                      //       ),
-                                      //     )
-                                      // ),
 
 
                                     ],

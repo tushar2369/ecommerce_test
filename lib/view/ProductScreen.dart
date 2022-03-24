@@ -159,21 +159,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   width: 8.0,
                                                 ),
 
-                                                ///Discount Price.............
-                                                Container(
-                                                  child: Text(
-                                                    " \u09F3${10}",
-                                                    style: TextStyle(
-                                                        color: Color(
-                                                          0xff999999,
-                                                        ),
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.w400,
-                                                        fontFamily: "Roboto",
-                                                        decoration: TextDecoration
-                                                            .lineThrough),
-                                                  ),
-                                                ),
 
                                               ],
                                             )),
