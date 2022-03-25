@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecommerce/Bloc/cart/cart_bloc.dart';
 import 'package:ecommerce/Bloc/category/category_bloc.dart';
 import 'package:ecommerce/Repository/CategoryRepo.dart';
+import 'package:ecommerce/view/AllProductsScreen.dart';
 import 'package:ecommerce/view/CartScreen.dart';
 import 'package:ecommerce/view/ProductScreen.dart';
 import 'package:ecommerce/view/ProfileScreen.dart';
@@ -96,10 +97,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ),
         ],
       ),
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
             children: [
               ///Slider.........................
               Container(
@@ -146,7 +149,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             ))),
               ),
               SizedBox(
-                height: ScreenUtil().setHeight(20),
+                height: ScreenUtil().setHeight(15),
               ),
 
               ///Category heading ......................
@@ -190,7 +193,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 builder: (context, state) {
                   if (state is CategoryOnSuccess && state.categories != null) {
                     return Container(
-                      height: ScreenUtil().setHeight(400),
+                      height: ScreenUtil().setHeight(340),
                       padding: const EdgeInsets.all(16),
                       child: GridView.builder(
                         itemCount: state.categories!.length,
@@ -261,6 +264,29 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   }
                 },
               ),
+
+              ///All Products................
+             GestureDetector(
+               onTap: (){
+                 Navigator.push(context, new MaterialPageRoute(builder: (context)=>AllProductsScreen()));
+               },
+               child: Container(
+                 height: 60,
+                 margin: const EdgeInsets.all(16),
+                 width: double.infinity,
+                 decoration: BoxDecoration(
+                   borderRadius: BorderRadius.circular(12.0),
+                   color: Theme.of(context).primaryColor.withOpacity(0.2),
+                 ),
+                 child: Center(
+                   child: Text('ALL PRODUCT',style: TextStyle(
+                       fontSize: 22,fontWeight:
+                   FontWeight.bold,letterSpacing: 3,
+
+                   ),textAlign: TextAlign.center,),
+                 ),
+               ),
+             )
             ],
           ),
         ),

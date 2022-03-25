@@ -17,4 +17,23 @@ class ProductRepo{
 
 
   }
+
+
+  Future<String> getAllProductByPage({int? limit}) async{
+    String url="${GlobalConfiguration().getValue("base_url")}products?limit="+limit.toString();
+    log('Request url : '+url);
+    const header={'Content-Type': 'application/json'};
+    Map param={
+      'limit':limit
+    };
+    var response=await http.get(Uri.parse(url),headers: header);
+    print(response.body);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to load album');
+    }
+
+
+  }
 }

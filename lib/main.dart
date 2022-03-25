@@ -9,6 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:global_configuration/global_configuration.dart';
 
+import 'Bloc/paginate/pginate_bloc.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("app_settings");
@@ -26,6 +28,10 @@ void main() async{
             BlocProvider<CartBloc>(
               create: (context) =>
                   CartBloc(),
+            ),
+            BlocProvider<PginateBloc>(
+              create: (context) =>
+                  PginateBloc(),
             ),
           ],
           child: MyApp())
